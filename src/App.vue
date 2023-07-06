@@ -11,18 +11,6 @@ const { initTheme } = useTheme()
 /** 初始化主题 */
 initTheme()
 
-/** 作者小心思 */
-ElNotification({
-  title: "Hello",
-  type: "success",
-  message: h(
-    "a",
-    { style: "color: teal", target: "_blank", href: "https://github.com/un-pany/v3-admin-vite" },
-    "小项目获取 star 不易，如果你喜欢这个项目的话，欢迎点击这里支持一个 star ！这是作者持续维护的唯一动力（小声：毕竟是免费的）"
-  ),
-  duration: 4000,
-  position: "bottom-right"
-})
 ElNotification({
   title: "提示",
   type: "warning",
@@ -34,9 +22,9 @@ ElNotification({
     },
     "由于平台 4.1.0 版本新增了多种布局模式，如果出现白屏情况，点击这里或手动前往控制台清理 LocalStorage 缓存数据后刷新页面即可！"
   ),
-  duration: 0,
+  duration: 2000,
   position: "bottom-right",
-  offset: 150
+  offset: 0
 })
 </script>
 

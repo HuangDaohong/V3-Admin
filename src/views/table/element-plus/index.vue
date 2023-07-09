@@ -1,14 +1,14 @@
 <script lang="ts" setup>
-import { reactive, ref, watch } from "vue"
-import { createTableDataApi, deleteTableDataApi, updateTableDataApi, getTableDataApi } from "@/api/table"
-import { type GetTableData } from "@/api/table/types/table"
-import { type FormInstance, type FormRules, ElMessage, ElMessageBox } from "element-plus"
-import { Search, Refresh, CirclePlus, Delete, Download, RefreshRight } from "@element-plus/icons-vue"
-import { usePagination } from "@/hooks/usePagination"
+import { reactive, ref, watch } from 'vue'
+import { createTableDataApi, deleteTableDataApi, updateTableDataApi, getTableDataApi } from '@/api/table'
+import { type GetTableData } from '@/api/table/types/table'
+import { type FormInstance, type FormRules, ElMessage, ElMessageBox } from 'element-plus'
+import { Search, Refresh, CirclePlus, Delete, Download, RefreshRight } from '@element-plus/icons-vue'
+import { usePagination } from '@/hooks/usePagination'
 
 defineOptions({
   // 命名当前组件
-  name: "ElementPlus"
+  name: 'ElementPlus'
 })
 
 const loading = ref<boolean>(false)
@@ -18,12 +18,12 @@ const { paginationData, handleCurrentChange, handleSizeChange } = usePagination(
 const dialogVisible = ref<boolean>(false)
 const formRef = ref<FormInstance | null>(null)
 const formData = reactive({
-  username: "",
-  password: ""
+  username: '',
+  password: ''
 })
 const formRules: FormRules = reactive({
-  username: [{ required: true, trigger: "blur", message: "请输入用户名" }],
-  password: [{ required: true, trigger: "blur", message: "请输入密码" }]
+  username: [{ required: true, trigger: 'blur', message: '请输入用户名' }],
+  password: [{ required: true, trigger: 'blur', message: '请输入密码' }]
 })
 const handleCreate = () => {
   formRef.value?.validate((valid: boolean, fields) => {
@@ -31,7 +31,7 @@ const handleCreate = () => {
       if (currentUpdateId.value === undefined) {
         createTableDataApi(formData)
           .then(() => {
-            ElMessage.success("新增成功")
+            ElMessage.success('新增成功')
             getTableData()
           })
           .finally(() => {
@@ -43,7 +43,7 @@ const handleCreate = () => {
           username: formData.username
         })
           .then(() => {
-            ElMessage.success("修改成功")
+            ElMessage.success('修改成功')
             getTableData()
           })
           .finally(() => {
@@ -51,26 +51,26 @@ const handleCreate = () => {
           })
       }
     } else {
-      console.error("表单校验不通过", fields)
+      console.error('表单校验不通过', fields)
     }
   })
 }
 const resetForm = () => {
   currentUpdateId.value = undefined
-  formData.username = ""
-  formData.password = ""
+  formData.username = ''
+  formData.password = ''
 }
 //#endregion
 
 //#region 删
 const handleDelete = (row: GetTableData) => {
-  ElMessageBox.confirm(`正在删除用户：${row.username}，确认删除？`, "提示", {
-    confirmButtonText: "确定",
-    cancelButtonText: "取消",
-    type: "warning"
+  ElMessageBox.confirm(`正在删除用户：${row.username}，确认删除？`, '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning'
   }).then(() => {
     deleteTableDataApi(row.id).then(() => {
-      ElMessage.success("删除成功")
+      ElMessage.success('删除成功')
       getTableData()
     })
   })
@@ -90,8 +90,8 @@ const handleUpdate = (row: GetTableData) => {
 const tableData = ref<GetTableData[]>([])
 const searchFormRef = ref<FormInstance | null>(null)
 const searchData = reactive({
-  username: "",
-  phone: ""
+  username: '',
+  phone: ''
 })
 const getTableData = () => {
   loading.value = true
@@ -197,12 +197,7 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
       </div>
     </el-card>
     <!-- 新增/修改 -->
-    <el-dialog
-      v-model="dialogVisible"
-      :title="currentUpdateId === undefined ? '新增用户' : '修改用户'"
-      @close="resetForm"
-      width="30%"
-    >
+    <el-dialog v-model="dialogVisible" :title="currentUpdateId === undefined ? '新增用户' : '修改用户'" @close="resetForm" width="30%">
       <el-form ref="formRef" :model="formData" :rules="formRules" label-width="100px" label-position="left">
         <el-form-item prop="username" label="用户名">
           <el-input v-model="formData.username" placeholder="请输入" />

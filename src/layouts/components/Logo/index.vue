@@ -1,11 +1,11 @@
 <script lang="ts" setup>
-import { computed } from "vue"
-import { storeToRefs } from "pinia"
-import { useSettingsStore } from "@/store/modules/settings"
-import { getCssVariableValue } from "@/utils"
-import logo from "@/assets/layouts/logo.png?url"
-import logoText1 from "@/assets/layouts/logo-text-1.png?url"
-import logoText2 from "@/assets/layouts/logo-text-2.png?url"
+import { computed } from 'vue'
+import { storeToRefs } from 'pinia'
+import { useSettingsStore } from '@/store/modules/settings'
+import { getCssVariableValue } from '@/utils'
+import logo from '@/assets/layouts/logo.png?url'
+import logoText1 from '@/assets/layouts/logo-text-1.png?url'
+import logoText2 from '@/assets/layouts/logo-text-2.png?url'
 
 interface Props {
   collapse?: boolean
@@ -19,9 +19,7 @@ const settingsStore = useSettingsStore()
 const { layoutMode } = storeToRefs(settingsStore)
 
 const bgCloor = computed(() => {
-  return layoutMode.value !== "left"
-    ? getCssVariableValue("--v3-header-bg-color")
-    : getCssVariableValue("--v3-sidebar-menu-bg-color")
+  return layoutMode.value !== 'left' ? getCssVariableValue('--v3-header-bg-color') : getCssVariableValue('--v3-sidebar-menu-bg-color')
 })
 </script>
 

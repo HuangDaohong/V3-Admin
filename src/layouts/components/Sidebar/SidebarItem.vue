@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import { computed } from "vue"
-import { type RouteRecordRaw } from "vue-router"
-import SidebarItemLink from "./SidebarItemLink.vue"
-import { isExternal } from "@/utils/validate"
-import path from "path-browserify"
+import { computed } from 'vue'
+import { type RouteRecordRaw } from 'vue-router'
+import SidebarItemLink from './SidebarItemLink.vue'
+import { isExternal } from '@/utils/validate'
+import path from 'path-browserify'
 
 interface Props {
   item: RouteRecordRaw
@@ -15,7 +15,7 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   isCollapse: false,
   isFirstLevel: true,
-  basePath: ""
+  basePath: ''
 })
 
 /** 是否始终显示根菜单 */
@@ -40,7 +40,7 @@ const theOnlyOneChild = computed(() => {
     case number === 1:
       return showingChildren.value[0]
     default:
-      return { ...props.item, path: "" }
+      return { ...props.item, path: '' }
   }
 })
 
@@ -58,7 +58,13 @@ const resolvePath = (routePath: string) => {
 </script>
 
 <template>
-  <div v-if="!props.item.meta?.hidden" :class="{ 'simple-mode': props.isCollapse, 'first-level': props.isFirstLevel }">
+  <div
+    v-if="!props.item.meta?.hidden"
+    :class="{
+      'simple-mode': props.isCollapse,
+      'first-level': props.isFirstLevel
+    }"
+  >
     <template v-if="!alwaysShowRootMenu && theOnlyOneChild && !theOnlyOneChild.children">
       <SidebarItemLink v-if="theOnlyOneChild.meta" :to="resolvePath(theOnlyOneChild.path)">
         <el-menu-item :index="resolvePath(theOnlyOneChild.path)">

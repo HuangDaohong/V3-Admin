@@ -4,6 +4,8 @@
       <el-empty description="Admin 权限可见" style="height: 10vh" />
     </div>
     <hr />
+    <SvgIcon name="phone" width="20px" height="20px" color="red" />
+
     <A @fn="updateNum" />
     <hr />
     <div>父组件：{{ num1 }}</div>
@@ -28,9 +30,9 @@
   </div>
 </template>
 <script setup lang="ts">
-import A from "./adminComs/A.vue"
-import B from "./adminComs/B.vue"
-import { ref, onMounted, watchEffect, reactive, computed, nextTick } from "vue"
+import A from './adminComs/A.vue'
+import B from './adminComs/B.vue'
+import { ref, onMounted, watchEffect, reactive, computed, nextTick } from 'vue'
 
 const num1 = ref(0)
 const updateNum = (num: number) => {
@@ -53,8 +55,8 @@ onMounted(() => console.log(itemRefs.value))
 
 const rawHtml = ref('<span style="color: red">This should be red.</span>')
 
-const url = ref("https://v3.vuejs.org/guide/composition-api-introduction.html#why-composition-api")
-const attributeName = ref("href")
+const url = ref('https://v3.vuejs.org/guide/composition-api-introduction.html#why-composition-api')
+const attributeName = ref('href')
 
 const state = reactive({ count: 0 })
 const double = computed(() => state.count * 2)
@@ -62,7 +64,7 @@ const increment = () => {
   state.count++
 
   nextTick(() => {
-    console.log("count is now: " + state.count)
+    console.log('count is now: ' + state.count)
   })
 }
 </script>

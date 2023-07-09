@@ -1,17 +1,17 @@
 <script lang="ts" setup>
-import { computed } from "vue"
-import { useRoute } from "vue-router"
-import { storeToRefs } from "pinia"
-import { useAppStore } from "@/store/modules/app"
-import { usePermissionStore } from "@/store/modules/permission"
-import { useSettingsStore } from "@/store/modules/settings"
-import SidebarItem from "./SidebarItem.vue"
-import Logo from "../Logo/index.vue"
-import { getCssVariableValue } from "@/utils"
+import { computed } from 'vue'
+import { useRoute } from 'vue-router'
+import { storeToRefs } from 'pinia'
+import { useAppStore } from '@/store/modules/app'
+import { usePermissionStore } from '@/store/modules/permission'
+import { useSettingsStore } from '@/store/modules/settings'
+import SidebarItem from './SidebarItem.vue'
+import Logo from '../Logo/index.vue'
+import { getCssVariableValue } from '@/utils'
 
-const v3SidebarMenuBgColor = getCssVariableValue("--v3-sidebar-menu-bg-color")
-const v3SidebarMenuTextColor = getCssVariableValue("--v3-sidebar-menu-text-color")
-const v3SidebarMenuActiveTextColor = getCssVariableValue("--v3-sidebar-menu-active-text-color")
+const v3SidebarMenuBgColor = getCssVariableValue('--v3-sidebar-menu-bg-color')
+const v3SidebarMenuTextColor = getCssVariableValue('--v3-sidebar-menu-text-color')
+const v3SidebarMenuActiveTextColor = getCssVariableValue('--v3-sidebar-menu-active-text-color')
 
 const route = useRoute()
 const appStore = useAppStore()
@@ -29,7 +29,11 @@ const activeMenu = computed(() => {
 })
 
 const isCollapse = computed(() => !appStore.sidebar.opened)
-const isLogo = computed(() => layoutMode.value === "left" && showLogo.value)
+const isLeft = computed(() => layoutMode.value === 'left')
+const isLogo = computed(() => isLeft.value && showLogo.value)
+const backgroundColor = computed(() => (isLeft.value ? v3SidebarMenuBgColor : undefined))
+const textColor = computed(() => (isLeft.value ? v3SidebarMenuTextColor : undefined))
+const activeTextColor = computed(() => (isLeft.value ? v3SidebarMenuActiveTextColor : undefined))
 </script>
 
 <template>
@@ -39,9 +43,9 @@ const isLogo = computed(() => layoutMode.value === "left" && showLogo.value)
       <el-menu
         :default-active="activeMenu"
         :collapse="isCollapse"
-        :background-color="v3SidebarMenuBgColor"
-        :text-color="v3SidebarMenuTextColor"
-        :active-text-color="v3SidebarMenuActiveTextColor"
+        :background-color="backgroundColor"
+        :text-color="textColor"
+        :active-text-color="activeTextColor"
         :unique-opened="true"
         :collapse-transition="false"
         mode="vertical"
@@ -61,7 +65,7 @@ const isLogo = computed(() => layoutMode.value === "left" && showLogo.value)
 <style lang="scss" scoped>
 @mixin tip-line {
   &::before {
-    content: "";
+    content: '';
     position: absolute;
     top: 0;
     left: 0;
@@ -126,7 +130,7 @@ const isLogo = computed(() => layoutMode.value === "left" && showLogo.value)
   :deep(.el-sub-menu) {
     &.is-active {
       .el-sub-menu__title {
-        color: var(--v3-sidebar-menu-active-text-color) !important;
+        // color: var(--v3-sidebar-menu-active-text-color) !important;
         @include tip-line;
       }
     }

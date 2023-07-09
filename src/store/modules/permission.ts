@@ -1,9 +1,9 @@
-import { ref } from "vue"
-import store from "@/store"
-import { defineStore } from "pinia"
-import { type RouteRecordRaw } from "vue-router"
-import { constantRoutes, asyncRoutes } from "@/router"
-import asyncRouteSettings from "@/config/async-route"
+import { ref } from 'vue'
+import store from '@/store'
+import { defineStore } from 'pinia'
+import { type RouteRecordRaw } from 'vue-router'
+import { constantRoutes, asyncRoutes } from '@/router'
+import asyncRouteSettings from '@/config/async-route'
 
 const hasPermission = (roles: string[], route: RouteRecordRaw) => {
   const routeRoles = route.meta?.roles
@@ -24,7 +24,7 @@ const filterAsyncRoutes = (routes: RouteRecordRaw[], roles: string[]) => {
   return res
 }
 
-export const usePermissionStore = defineStore("permission", () => {
+export const usePermissionStore = defineStore('permission', () => {
   const routes = ref<RouteRecordRaw[]>([])
   const dynamicRoutes = ref<RouteRecordRaw[]>([])
 

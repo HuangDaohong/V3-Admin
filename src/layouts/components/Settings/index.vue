@@ -56,8 +56,6 @@ watchEffect(() => {
 </template>
 
 <style lang="scss" scoped>
-@import '@/styles/mixins.scss';
-
 .setting-container {
   padding: 20px;
   .setting-item {

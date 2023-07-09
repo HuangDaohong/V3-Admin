@@ -40,3 +40,27 @@
   // 文本内容溢出容器时，文本末尾显示省略号
   text-overflow: ellipsis;
 }
+
+@mixin flexCenter() {
+  // flex
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  // 水平居中方式
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  -webkit-justify-content: center;
+  justify-content: center;
+  // 垂直居中方式
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+}
+
+@mixin calc-width($w) {
+  width: calc(100% - $w);
+}
+@mixin calc-height($h) {
+  height: calc(100% - $h);
+}

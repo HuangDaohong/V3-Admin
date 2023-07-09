@@ -21,6 +21,17 @@ export default (configEnv: ConfigEnv): UserConfigExport => {
         '@': resolve(__dirname, './src')
       }
     },
+    css: {
+      preprocessorOptions: {
+        scss: {
+          // additionalData的内容会在每个scss文件的开头自动注入，这样就可以全局使用scss了
+          // 由于css文件是运行时的，所有variable.css文件不用注入，当为variable.scss是需要注入的
+          additionalData: '@use "@/styles/mixins.scss" as *;'
+          // 支持导入多个scss文件
+          //  additionalData: '@import "@/styles/variable.scss"; @import "@/styles/mixin.scss";'
+        }
+      }
+    },
     server: {
       /** 是否开启 HTTPS */
       https: false,

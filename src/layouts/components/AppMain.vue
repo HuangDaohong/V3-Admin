@@ -27,8 +27,6 @@ const key = computed(() => {
 </template>
 
 <style lang="scss" scoped>
-@import '@/styles/mixins.scss';
-
 .app-main {
   width: 100%;
   background-color: var(--v3-body-bg-color);

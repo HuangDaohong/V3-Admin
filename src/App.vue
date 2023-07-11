@@ -11,8 +11,6 @@ const { initTheme } = useTheme()
 /** 初始化主题 */
 initTheme()
 
-console.log('Mode', import.meta.env.MODE) // development
-
 ElNotification({
   title: '提示',
   type: 'warning',

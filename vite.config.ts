@@ -11,10 +11,9 @@ import UnoCSS from 'unocss/vite'
 /** 配置项文档：https://cn.vitejs.dev/config */
 export default (configEnv: ConfigEnv): UserConfigExport => {
   const viteEnv = loadEnv(configEnv.mode, process.cwd()) as ImportMetaEnv
-  const { VITE_PUBLIC_PATH } = viteEnv
   return {
     /** 打包时根据实际情况修改 base */
-    base: VITE_PUBLIC_PATH,
+    base: viteEnv.VITE_PUBLIC_PATH,
     resolve: {
       alias: {
         /** @ 符号指向 src 目录 */
@@ -45,20 +44,33 @@ export default (configEnv: ConfigEnv): UserConfigExport => {
       cors: true,
       /** 端口被占用时，是否直接退出 */
       strictPort: false,
+
       /** 接口代理 反向代理 */
       // https://juejin.cn/post/7209852595002409018
-      // 去匹配 /api/v1 这个路径，假如发送的请求包含了这个路径，那么就将进行反向代理，将请求代理到 target 字段配置的路径
-      // 直接采用这种反向代理的好处就是前端调用后端接口时不会产生跨域问题，但要记得这只是开发环境配置好了反向代理，以后部署前端到线上环境的时候，
-      // 需要采用 Nginx 或其他工具来实现线上环境的反向代理
+      /*
+      例如：https://mock.mengxuegu.com/mock/63218b5fb4c53348ed2bc212/api/v1/login是后端的接口
+      当target设置为https://mock.mengxuegu.com/mock/63218b5fb4c53348ed2bc212/
+      那么我们在前端请求接口时，只需要写成 /api/v1/login （因为/api/v1是baseURL，所有只要写/login ）就会变成：
+      即==》 https://mock.mengxuegu.com/mock/63218b5fb4c53348ed2bc212/api/v1/login
+      也就不用rewrite了
+       */
       proxy: {
         '/api/v1': {
-          target: 'https://mock.mengxuegu.com/mock/63218b5fb4c53348ed2bc212/api/v1',
+          target: 'https://mock.mengxuegu.com/mock/63218b5fb4c53348ed2bc212',
           ws: true,
           /** 是否允许跨域 */
-          changeOrigin: true,
-          rewrite: (path) => path.replace('/api/v1', '')
+          changeOrigin: true
         }
       }
+      // proxy: {
+      //   '/api/v1': {
+      //     target: 'https://mock.mengxuegu.com/mock/63218b5fb4c53348ed2bc212/api/v1',
+      //     ws: true,
+      //     /** 是否允许跨域 */
+      //     changeOrigin: true,
+      //     rewrite: (path) => path.replace('/api/v1', '')
+      //   }
+      // }
     },
     build: {
       /** 消除打包大小超过 500kb 警告 */

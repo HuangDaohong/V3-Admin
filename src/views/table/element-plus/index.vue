@@ -123,6 +123,35 @@ const resetSearch = () => {
 
 /** 监听分页参数的变化 */
 watch([() => paginationData.currentPage, () => paginationData.pageSize], getTableData, { immediate: true })
+
+const handleSwitch = (row: any) => {
+  // 提示确认
+  ElMessageBox.confirm(
+    `正在${row.status == true ? '禁用' : '启用'}用户：${row.username}，确认${row.status === true ? '禁用' : '启用'}？`,
+    '提示',
+    {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning'
+    }
+  )
+    .then(() => {
+      // 发送请求
+      // 更新状态
+      row.status = row.status === false ? false : true
+      // 提示成功
+      ElMessage.success(`${row.status === true ? '启用' : '禁用'}成功`)
+    })
+    .catch(() => {
+      // 更新状态
+      row.status = row.status === false ? true : false
+      ElMessage.info(`${row.status === true ? '启用' : '禁用'}已取消`)
+    })
+  console.log(row.id, row.status)
+}
+const handlePhoneChange = (rows: any) => {
+  console.log(rows.id, rows.phone)
+}
 </script>
 
 <template>
@@ -166,12 +195,25 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
               <el-tag v-else type="warning" effect="plain">{{ scope.row.roles }}</el-tag>
             </template>
           </el-table-column>
-          <el-table-column prop="phone" label="手机号" align="center" />
+          <!-- <el-table-column prop="phone" label="手机号" align="center" /> -->
+          <el-table-column prop="phone" label="手机号" align="center">
+            <template #default="scope">
+              <el-input v-model="scope.row.phone" placeholder="请输入" @change="handlePhoneChange(scope.row)" />
+            </template>
+          </el-table-column>
           <el-table-column prop="email" label="邮箱" align="center" />
           <el-table-column prop="status" label="状态" align="center">
             <template #default="scope">
-              <el-tag v-if="scope.row.status" type="success" effect="plain">启用</el-tag>
-              <el-tag v-else type="danger" effect="plain">禁用</el-tag>
+              <!-- <el-tag v-if="scope.row.status" type="success" effect="plain">启用</el-tag>
+              <el-tag v-else type="danger" effect="plain">禁用</el-tag> -->
+              <el-switch
+                v-model="scope.row.status"
+                active-color="#13ce66"
+                inactive-color="#ff4949"
+                active-text="启用"
+                inactive-text="禁用"
+                @change="handleSwitch(scope.row)"
+              />
             </template>
           </el-table-column>
           <el-table-column prop="createTime" label="创建时间" align="center" />

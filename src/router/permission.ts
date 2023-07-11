@@ -11,7 +11,8 @@ import 'nprogress/nprogress.css'
 NProgress.configure({ showSpinner: false })
 
 router.beforeEach(async (to, _from, next) => {
-  document.title = `${import.meta.env.VITE_APP_TITLE} - ${to.meta.title}`
+  // import.meta.env.MODE: development | production | test
+  document.title = `${import.meta.env.VITE_APP_TITLE} - ${to.meta.title}-${import.meta.env.MODE}`
   NProgress.start()
   const userStore = useUserStoreHook()
   const permissionStore = usePermissionStoreHook()
@@ -20,7 +21,7 @@ router.beforeEach(async (to, _from, next) => {
     if (to.path === '/login') {
       // 如果已经登录，并准备进入 Login 页面，则重定向到主页
       next({ path: '/' })
-      NProgress.done()
+      // NProgress.done()
     } else {
       // 检查用户是否已获得其权限角色
       if (userStore.roles.length === 0) {
@@ -48,7 +49,7 @@ router.beforeEach(async (to, _from, next) => {
           userStore.resetToken()
           ElMessage.error(err.message || '路由守卫过程发生错误')
           next('/login')
-          NProgress.done()
+          // NProgress.done()
         }
       } else {
         next()
@@ -62,7 +63,7 @@ router.beforeEach(async (to, _from, next) => {
     } else {
       // 其他没有访问权限的页面将被重定向到登录页面
       next('/login')
-      NProgress.done()
+      // NProgress.done()
     }
   }
 })

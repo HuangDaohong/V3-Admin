@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { reactive, ref } from 'vue'
+import { reactive, ref } from "vue"
 const num = reactive({
   value: 0
 })
-const emit = defineEmits(['fn'])
+const emit = defineEmits(["fn"])
 
 const clickBtn = () => {
   num.value++
-  emit('fn', num.value)
+  emit("fn", num.value)
 }
 
 const show = ref(true)

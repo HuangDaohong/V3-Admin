@@ -1,20 +1,20 @@
-import { ref } from 'vue'
-import store from '@/store'
-import { defineStore } from 'pinia'
-import { usePermissionStore } from './permission'
-import { useTagsViewStore } from './tags-view'
-import { useSettingsStore } from './settings'
-import { getToken, removeToken, setToken } from '@/utils/cache/cookies'
-import router, { resetRouter } from '@/router'
-import { loginApi, getUserInfoApi } from '@/api/login'
-import { type LoginRequestData } from '@/api/login/types/login'
-import { type RouteRecordRaw } from 'vue-router'
-import asyncRouteSettings from '@/config/async-route'
+import { ref } from "vue"
+import store from "@/store"
+import { defineStore } from "pinia"
+import { usePermissionStore } from "./permission"
+import { useTagsViewStore } from "./tags-view"
+import { useSettingsStore } from "./settings"
+import { getToken, removeToken, setToken } from "@/utils/cache/cookies"
+import router, { resetRouter } from "@/router"
+import { loginApi, getUserInfoApi } from "@/api/login"
+import { type LoginRequestData } from "@/api/login/types/login"
+import { type RouteRecordRaw } from "vue-router"
+import asyncRouteSettings from "@/config/async-route"
 
-export const useUserStore = defineStore('user', () => {
-  const token = ref<string>(getToken() || '')
+export const useUserStore = defineStore("user", () => {
+  const token = ref<string>(getToken() || "")
   const roles = ref<string[]>([])
-  const username = ref<string>('')
+  const username = ref<string>("")
 
   const permissionStore = usePermissionStore()
   const tagsViewStore = useTagsViewStore()
@@ -39,7 +39,7 @@ export const useUserStore = defineStore('user', () => {
   }
   /** 切换角色 */
   const changeRoles = async (role: string) => {
-    const newToken = 'token-' + role
+    const newToken = "token-" + role
     token.value = newToken
     setToken(newToken)
     await getInfo()
@@ -53,7 +53,7 @@ export const useUserStore = defineStore('user', () => {
   /** 登出 */
   const logout = () => {
     removeToken()
-    token.value = ''
+    token.value = ""
     roles.value = []
     resetRouter()
     _resetTagsView()
@@ -61,7 +61,7 @@ export const useUserStore = defineStore('user', () => {
   /** 重置 Token */
   const resetToken = () => {
     removeToken()
-    token.value = ''
+    token.value = ""
     roles.value = []
   }
   /** 重置 Visited Views 和 Cached Views */
@@ -72,17 +72,7 @@ export const useUserStore = defineStore('user', () => {
     }
   }
 
-  return {
-    token,
-    roles,
-    username,
-    setRoles,
-    login,
-    getInfo,
-    changeRoles,
-    logout,
-    resetToken
-  }
+  return { token, roles, username, setRoles, login, getInfo, changeRoles, logout, resetToken }
 })
 
 /** 在 setup 外使用 */

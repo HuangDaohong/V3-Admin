@@ -1,21 +1,23 @@
 <script lang="ts" setup>
-import { computed } from 'vue'
-import { type RouteRecordRaw } from 'vue-router'
-import SidebarItemLink from './SidebarItemLink.vue'
-import { isExternal } from '@/utils/validate'
-import path from 'path-browserify'
+import { computed } from "vue"
+import { type RouteRecordRaw } from "vue-router"
+import SidebarItemLink from "./SidebarItemLink.vue"
+import { isExternal } from "@/utils/validate"
+import path from "path-browserify"
 
 interface Props {
   item: RouteRecordRaw
   isCollapse?: boolean
+  isTop?: boolean
   isFirstLevel?: boolean
   basePath?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
   isCollapse: false,
+  isTop: false,
   isFirstLevel: true,
-  basePath: ''
+  basePath: ""
 })
 
 /** 是否始终显示根菜单 */
@@ -40,7 +42,7 @@ const theOnlyOneChild = computed(() => {
     case number === 1:
       return showingChildren.value[0]
     default:
-      return { ...props.item, path: '' }
+      return { ...props.item, path: "" }
   }
 })
 
@@ -60,10 +62,7 @@ const resolvePath = (routePath: string) => {
 <template>
   <div
     v-if="!props.item.meta?.hidden"
-    :class="{
-      'simple-mode': props.isCollapse,
-      'first-level': props.isFirstLevel
-    }"
+    :class="{ 'simple-mode': props.isCollapse && !isTop, 'first-level': props.isFirstLevel }"
   >
     <template v-if="!alwaysShowRootMenu && theOnlyOneChild && !theOnlyOneChild.children">
       <SidebarItemLink v-if="theOnlyOneChild.meta" :to="resolvePath(theOnlyOneChild.path)">

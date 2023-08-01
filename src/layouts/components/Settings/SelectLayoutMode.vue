@@ -1,12 +1,15 @@
 <script lang="ts" setup>
-import { computed } from 'vue'
-import { storeToRefs } from 'pinia'
-import { useSettingsStore } from '@/store/modules/settings'
+import { computed } from "vue"
+import { storeToRefs } from "pinia"
+import { useSettingsStore } from "@/store/modules/settings"
+
 const settingsStore = useSettingsStore()
+
 const { layoutMode } = storeToRefs(settingsStore)
-const isLeft = computed(() => layoutMode.value === 'left')
-const isTop = computed(() => layoutMode.value === 'top')
-const isLeftTop = computed(() => layoutMode.value === 'left-top')
+
+const isLeft = computed(() => layoutMode.value === "left")
+const isTop = computed(() => layoutMode.value === "top")
+const isLeftTop = computed(() => layoutMode.value === "left-top")
 </script>
 
 <template>
@@ -20,7 +23,7 @@ const isLeftTop = computed(() => layoutMode.value === 'left-top')
         </el-container>
       </el-container>
     </el-tooltip>
-    <el-tooltip content="顶部模式（开发中）">
+    <el-tooltip content="顶部模式">
       <el-container class="layout-mode top" :class="{ active: isTop }" @click="layoutMode = 'top'">
         <el-header />
         <el-main />
@@ -43,6 +46,7 @@ const isLeftTop = computed(() => layoutMode.value === 'left-top')
   display: flex;
   justify-content: space-between;
 }
+
 .layout-mode {
   width: 60px;
   flex-grow: 0;
@@ -54,15 +58,19 @@ const isLeftTop = computed(() => layoutMode.value === 'left-top')
     border: 2px solid var(--el-color-primary);
   }
 }
+
 .active {
   border: 2px solid var(--el-color-primary);
 }
+
 .el-header {
   height: 12px;
 }
+
 .el-aside {
   width: 16px;
 }
+
 .left {
   .el-header {
     background-color: var(--el-border-color);
@@ -74,6 +82,7 @@ const isLeftTop = computed(() => layoutMode.value === 'left-top')
     background-color: var(--el-fill-color);
   }
 }
+
 .top {
   .el-header {
     background-color: var(--el-color-primary);
@@ -82,6 +91,7 @@ const isLeftTop = computed(() => layoutMode.value === 'left-top')
     background-color: var(--el-fill-color);
   }
 }
+
 .left-top {
   .el-header {
     background-color: var(--el-border-color);

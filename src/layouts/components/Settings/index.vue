@@ -1,10 +1,10 @@
 <script lang="ts" setup>
-import { watchEffect } from 'vue'
-import { storeToRefs } from 'pinia'
-import { useSettingsStore } from '@/store/modules/settings'
-import { resetConfigLayout } from '@/utils'
-import SelectLayoutMode from './SelectLayoutMode.vue'
-import { Refresh } from '@element-plus/icons-vue'
+import { watchEffect } from "vue"
+import { storeToRefs } from "pinia"
+import { useSettingsStore } from "@/store/modules/settings"
+import { resetConfigLayout } from "@/utils"
+import SelectLayoutMode from "./SelectLayoutMode.vue"
+import { Refresh } from "@element-plus/icons-vue"
 
 const settingsStore = useSettingsStore()
 
@@ -25,8 +25,8 @@ const {
 /** 定义 switch 设置项 */
 const switchSettings = {
   显示标签栏: showTagsView,
-  '显示 Logo': showLogo,
-  '固定 Header': fixedHeader,
+  "显示 Logo": showLogo,
+  "固定 Header": fixedHeader,
   显示消息通知: showNotify,
   显示切换主题按钮: showThemeSwitch,
   显示全屏按钮: showScreenfull,
@@ -37,7 +37,7 @@ const switchSettings = {
 
 /** 非左侧模式时，Header 都是 fixed 布局 */
 watchEffect(() => {
-  layoutMode.value !== 'left' && (fixedHeader.value = true)
+  layoutMode.value !== "left" && (fixedHeader.value = true)
 })
 </script>
 
@@ -56,6 +56,7 @@ watchEffect(() => {
 </template>
 
 <style lang="scss" scoped>
+// @import "@/styles/mixins.scss";
 .setting-container {
   padding: 20px;
   .setting-item {

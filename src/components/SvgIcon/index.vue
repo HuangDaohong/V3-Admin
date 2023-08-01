@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed } from 'vue'
+import { computed } from "vue"
 
 interface Props {
   name: string
@@ -10,10 +10,10 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  prefix: 'icon',
-  width: '1em',
-  height: '1em',
-  color: 'currentColor'
+  prefix: "icon",
+  width: "1em",
+  height: "1em",
+  color: "currentColor"
 })
 
 const symbolId = computed(() => `#${props.prefix}-${props.name}`)

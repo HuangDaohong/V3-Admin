@@ -1,5 +1,4 @@
-/** 白屏阶段会执行的 CSS 加载动画 ，用于显示页面加载状态或加载动画。
-为 Vue 应用的初始化加载阶段提供一个容器，用于显示加载状态或加载动画，直到 Vue 应用完全加载和渲染完成后再隐藏该加载状态。*/
+/** 白屏阶段会执行的 CSS 加载动画 */
 
 #app-loading {
   position: relative;
@@ -20,7 +19,7 @@
 
 #app-loading:before,
 #app-loading:after {
-  content: '';
+  content: "";
   position: absolute;
 }
 

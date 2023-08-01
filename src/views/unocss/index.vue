@@ -9,6 +9,8 @@
         </div>
       </div>
     </div>
-    <div absolute bottom-5 right-0 left-0 text-center op30 dark:op60 fw300>该页面是一个 UnoCSS 的使用案例，其他页面依旧采用 Scss</div>
+    <div absolute bottom-5 right-0 left-0 text-center op30 dark:op60 fw300>
+      该页面是一个 UnoCSS 的使用案例，其他页面依旧采用 Scss
+    </div>
   </div>
 </template>

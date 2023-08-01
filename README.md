@@ -1,14 +1,12 @@
 <div align="center">
-  <img alt="vue3-admin Logo" width="120" height="120" src="./src/assets/layouts/logo.png">
   <h1>vue3-admin</h1>
-  <span>中文 | <a href="./README.zh-CN.md">English </a></span>
   <span><a href="./README.en.md">English</a> | 中文</span>
 </div>
-
 
 ## ⚡ 简介
 
 一个免费开源的中后台管理系统基础解决方案，基于 Vue3、TypeScript、Element Plus、Pinia 和 Vite 等主流技术.
+
 ## 特性
 
 - **Vue3**：采用 Vue3 + script setup 最新的 Vue3 组合式 API

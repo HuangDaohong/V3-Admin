@@ -45,20 +45,27 @@ const setHtmlRootClassName = (value: ThemeName) => {
   document.documentElement.className = value
 }
 
+// 查询当前系统主题颜色
+const match: MediaQueryList = matchMedia("(prefers-color-scheme: dark)")
+
+/** 跟随系统主题 */
+const followSystemTheme = () => {
+  let value = activeThemeName.value
+  value = match.matches ? "dark" : DEFAULT_THEME_NAME
+  setHtmlRootClassName(value)
+  setActiveThemeName("OS")
+}
+
 /** 初始化 */
 const initTheme = () => {
-  // watchEffect 来收集副作用
   watchEffect(() => {
-    let value = activeThemeName.value
-    if (value === "OS") {
-      // 检测系统是否开启了深色模式
-      const match_OS_Dark = matchMedia("(prefers-color-scheme: dark)").matches
-      value = match_OS_Dark ? "dark" : DEFAULT_THEME_NAME
-      setHtmlRootClassName(value)
-      setActiveThemeName(value)
+    if (activeThemeName.value === "OS") {
+      followSystemTheme()
+      match.addEventListener("change", followSystemTheme)
     } else {
-      setHtmlRootClassName(value)
-      setActiveThemeName(value)
+      setHtmlRootClassName(activeThemeName.value)
+      setActiveThemeName(activeThemeName.value)
+      match.removeEventListener("change", followSystemTheme)
     }
   })
 }

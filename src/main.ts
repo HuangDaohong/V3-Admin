@@ -7,6 +7,10 @@ import "@/router/permission"
 // load
 import { loadPlugins } from "@/plugins"
 import { loadDirectives } from "@/directives"
+
+// 禁止使用 devtools
+// import "@/utils/devtools-detector"
+
 // css
 import "uno.css"
 import "normalize.css"

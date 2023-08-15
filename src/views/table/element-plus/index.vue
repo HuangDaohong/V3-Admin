@@ -3,7 +3,7 @@ import { reactive, ref, watch } from "vue"
 import { createTableDataApi, deleteTableDataApi, updateTableDataApi, getTableDataApi } from "@/api/table"
 import { type GetTableData } from "@/api/table/types/table"
 import { type FormInstance, type FormRules, ElMessage, ElMessageBox } from "element-plus"
-import { Search, Refresh, CirclePlus, Delete, Download, RefreshRight } from "@element-plus/icons-vue"
+import { Search, CirclePlus, Delete, Download, RefreshRight } from "@element-plus/icons-vue"
 import { usePagination } from "@/hooks/usePagination"
 
 defineOptions({
@@ -14,7 +14,7 @@ defineOptions({
 const loading = ref<boolean>(false)
 const { paginationData, handleCurrentChange, handleSizeChange } = usePagination()
 
-//#region 增
+// 增
 const dialogVisible = ref<boolean>(false)
 const formRef = ref<FormInstance | null>(null)
 const formData = reactive({
@@ -60,9 +60,8 @@ const resetForm = () => {
   formData.username = ""
   formData.password = ""
 }
-//#endregion
 
-//#region 删
+// 删
 const handleDelete = (row: GetTableData) => {
   ElMessageBox.confirm(`正在删除用户：${row.username}，确认删除？`, "提示", {
     confirmButtonText: "确定",
@@ -75,18 +74,16 @@ const handleDelete = (row: GetTableData) => {
     })
   })
 }
-//#endregion
 
-//#region 改
+// 改
 const currentUpdateId = ref<undefined | string>(undefined)
 const handleUpdate = (row: GetTableData) => {
   currentUpdateId.value = row.id
   formData.username = row.username
   dialogVisible.value = true
 }
-//#endregion
 
-//#region 查
+//查
 const tableData = ref<GetTableData[]>([])
 const searchFormRef = ref<FormInstance | null>(null)
 const searchData = reactive({
@@ -101,7 +98,7 @@ const getTableData = () => {
     username: searchData.username || undefined,
     phone: searchData.phone || undefined
   })
-    .then((res) => {
+    .then((res: any) => {
       paginationData.total = res.data.total
       tableData.value = res.data.list
     })
@@ -115,14 +112,41 @@ const getTableData = () => {
 const handleSearch = () => {
   paginationData.currentPage === 1 ? getTableData() : (paginationData.currentPage = 1)
 }
-const resetSearch = () => {
-  searchFormRef.value?.resetFields()
-  handleSearch()
-}
-//#endregion
+// const resetSearch = () => {
+//   searchFormRef.value?.resetFields()
+//   handleSearch()
+// }
 
-const handlePhoneChange = (rows: any) => {
-  console.log(rows.id, rows.phone)
+// const handlePhoneChange = (rows: any) => {
+//   console.log(rows.id, rows.phone)
+// }
+
+const _goto = (row: any) => {
+  ElMessage.success(row.id)
+}
+
+// 编辑任务名称
+const _editName = (data: any) => {
+  data.username_copy = data.username
+  data.isEditStatu = true
+}
+
+// 确认编辑
+const _sureEditName = (data: any) => {
+  if (!data.username_copy) return ElMessage.error("名称不能为空！")
+  if (data.username_copy.length < 4) return ElMessage.error("最小输入4个字符")
+  if (data.username_copy.length > 50) return ElMessage.error("最大支持50个字符")
+  if (/^[a-zA-Z0-9_\-\u4e00-\u9fa5]+$/.test(data.username_copy) === false)
+    return ElMessage.error("格式错误，请输入中文、英文、数字、横线（-）和下划线（_）")
+  if (data.username_copy === data.name) {
+    data.isEditStatu = false
+    return
+  }
+  setTimeout(() => {
+    ElMessage.success(`名称：${data.username_copy}--id:${data.id}--编辑成功`)
+    data.username_copy = ""
+    handleSearch()
+  }, 100)
 }
 
 /** 监听分页参数的变化 */
@@ -133,16 +157,43 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
   <div class="app-container">
     <el-card v-loading="loading" shadow="never" class="search-wrapper">
       <el-form ref="searchFormRef" :inline="true" :model="searchData">
-        <el-form-item prop="username" label="用户名">
-          <el-input v-model="searchData.username" placeholder="请输入" />
+        <el-form-item prop="username" label="用户名:">
+          <el-input
+            v-model="searchData.username"
+            placeholder="请输入"
+            clearable
+            @clear="handleSearch"
+            class="common-input"
+            @keyup.enter="handleSearch"
+            @input="(value) => (searchData.username = value.trim())"
+          >
+            <template #suffix>
+              <el-icon @click="handleSearch" style="cursor: pointer">
+                <Search />
+              </el-icon>
+            </template>
+          </el-input>
         </el-form-item>
-        <el-form-item prop="phone" label="手机号">
-          <el-input v-model="searchData.phone" placeholder="请输入" />
+        <el-form-item prop="phone" label="手机号:">
+          <el-input
+            v-model="searchData.phone"
+            placeholder="请输入"
+            class="common-input"
+            clearable
+            @clear="handleSearch"
+            @keyup.enter="handleSearch"
+          >
+            <template #suffix>
+              <el-icon @click="handleSearch" style="cursor: pointer">
+                <Search />
+              </el-icon>
+            </template>
+          </el-input>
         </el-form-item>
-        <el-form-item>
+        <!-- <el-form-item>
           <el-button type="primary" :icon="Search" @click="handleSearch">查询</el-button>
           <el-button :icon="Refresh" @click="resetSearch">重置</el-button>
-        </el-form-item>
+        </el-form-item> -->
       </el-form>
     </el-card>
     <el-card v-loading="loading" shadow="never">
@@ -163,20 +214,50 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
       <div class="table-wrapper">
         <el-table :data="tableData">
           <el-table-column type="selection" width="50" align="center" />
-          <el-table-column prop="username" label="用户名" align="center" />
-          <el-table-column prop="roles" label="角色" align="center">
+          <!-- <el-table-column prop="username" label="用户名" align="center" /> -->
+          <el-table-column prop="username" label="任务名称">
+            <template #default="scope">
+              <template v-if="!scope.row.isEditStatu">
+                <div class="name-and-editIcon">
+                  <span class="can-click" @click="_goto(scope.row)">{{ scope.row.username }}</span>
+                  <el-icon :size="15" class="el-icon-bianji" @click="_editName(scope.row)">
+                    <Edit />
+                  </el-icon>
+                </div>
+              </template>
+              <el-input v-else v-model="scope.row.username_copy" placeholder="请输入名称">
+                <template #suffix>
+                  <el-icon
+                    :size="17"
+                    @click="_sureEditName(scope.row)"
+                    style="color: green; margin-right: 5px; cursor: pointer"
+                  >
+                    <CircleCheck />
+                  </el-icon>
+                  <el-icon
+                    :size="17"
+                    @click="scope.row.isEditStatu = false"
+                    style="color: #409eff; margin-right: 5px; cursor: pointer"
+                  >
+                    <CircleClose />
+                  </el-icon>
+                </template>
+              </el-input>
+            </template>
+          </el-table-column>
+          <el-table-column prop="roles" label="角色" align="center" show-overflow-tooltip>
             <template #default="scope">
               <el-tag v-if="scope.row.roles === 'admin'" effect="plain">admin</el-tag>
               <el-tag v-else type="warning" effect="plain">{{ scope.row.roles }}</el-tag>
             </template>
           </el-table-column>
-          <!-- <el-table-column prop="phone" label="手机号" align="center" /> -->
-          <el-table-column prop="phone" label="手机号" align="center">
+          <el-table-column prop="phone" label="手机号" align="center" />
+          <!-- <el-table-column prop="phone" label="手机号" align="center">
             <template #default="scope">
               <el-input v-model="scope.row.phone" placeholder="请输入" @change="handlePhoneChange(scope.row)" />
             </template>
-          </el-table-column>
-          <el-table-column prop="email" label="邮箱" align="center" />
+          </el-table-column> -->
+          <el-table-column prop="email" label="邮箱" align="center" show-overflow-tooltip width="150" />
           <el-table-column prop="status" label="状态" align="center">
             <template #default="scope">
               <el-tag v-if="scope.row.status" type="success" effect="plain">启用</el-tag>
@@ -249,5 +330,20 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
 .pager-wrapper {
   display: flex;
   justify-content: flex-end;
+}
+.name-and-editIcon {
+  display: flex;
+  align-items: center;
+  .can-click {
+    cursor: pointer;
+    color: var(--el-color-primary);
+  }
+  .el-icon-bianji {
+    margin-left: 10px;
+    cursor: pointer;
+  }
+}
+.common-input {
+  width: 200px;
 }
 </style>

@@ -1,23 +1,27 @@
-import { ref, watchEffect } from "vue"
+import { ref } from "vue"
 import { defineStore } from "pinia"
-import { useSettingsStore } from "./settings"
+// import { useSettingsStore } from "./settings"
 import { type RouteLocationNormalized } from "vue-router"
-import { getVisitedViews, setVisitedViews, getCachedViews, setCachedViews } from "@/utils/cache/local-storage"
+// import { getVisitedViews, setVisitedViews, getCachedViews, setCachedViews } from "@/utils/cache/local-storage"
 
 export type TagView = Partial<RouteLocationNormalized>
 
 export const useTagsViewStore = defineStore(
   "tags-view",
   () => {
-    const { cacheTagsView } = useSettingsStore()
-    const visitedViews = ref<TagView[]>(cacheTagsView ? getVisitedViews() : [])
-    const cachedViews = ref<string[]>(cacheTagsView ? getCachedViews() : [])
+    //注释的不用了，现在用的是vuex-persistedstate
+    // cacheTagsView表示是否缓存标签栏数据
+    // const { cacheTagsView } = useSettingsStore()
+    // const visitedViews = ref<TagView[]>(cacheTagsView ? getVisitedViews() : [])
+    // const cachedViews = ref<string[]>(cacheTagsView ? getCachedViews() : [])
+    const visitedViews = ref<TagView[]>([])
+    const cachedViews = ref<string[]>([])
 
     /** 缓存标签栏数据 */
-    watchEffect(() => {
-      setVisitedViews(visitedViews.value)
-      setCachedViews(cachedViews.value)
-    })
+    // watchEffect(() => {
+    //   setVisitedViews(visitedViews.value)
+    //   setCachedViews(cachedViews.value)
+    // })
 
     //#region add
     const addVisitedView = (view: TagView) => {
@@ -82,6 +86,45 @@ export const useTagsViewStore = defineStore(
     }
     //#endregion
 
+    //#region delLeft,保留固定的 tags
+    const delLeftVisitedViews = (view: TagView) => {
+      const index = visitedViews.value.findIndex((v) => v.path === view.path)
+      if (index > 0) {
+        // 保留固定的 tags
+        const affixTags = visitedViews.value.filter((tag) => tag.meta?.affix)
+        visitedViews.value = affixTags.concat(visitedViews.value.slice(index, visitedViews.value.length))
+      } else {
+        delAllVisitedViews()
+      }
+    }
+
+    const delLeftCachedViews = (view: TagView) => {
+      if (typeof view.name !== "string") return
+      const index = cachedViews.value.indexOf(view.name)
+      if (index > 0) {
+        cachedViews.value = cachedViews.value.slice(index, cachedViews.value.length)
+      } else {
+        delAllCachedViews()
+      }
+    }
+    // #endregion
+
+    //#region delRight
+    const delRightVisitedViews = (view: TagView) => {
+      const index = visitedViews.value.findIndex((v) => v.path === view.path)
+      if (index >= 0 && index < visitedViews.value.length - 1) {
+        visitedViews.value = visitedViews.value.slice(0, index + 1)
+      }
+    }
+
+    const delRightCachedViews = (view: TagView) => {
+      if (typeof view.name !== "string") return
+      const index = cachedViews.value.indexOf(view.name)
+      if (index >= 0 && index < cachedViews.value.length - 1) {
+        cachedViews.value = cachedViews.value.slice(0, index + 1)
+      }
+    }
+    //#endregion
     return {
       visitedViews,
       cachedViews,
@@ -92,13 +135,17 @@ export const useTagsViewStore = defineStore(
       delOthersVisitedViews,
       delOthersCachedViews,
       delAllVisitedViews,
-      delAllCachedViews
+      delAllCachedViews,
+      delLeftVisitedViews,
+      delRightVisitedViews,
+      delLeftCachedViews,
+      delRightCachedViews
+    }
+  },
+  {
+    persist: {
+      key: "vue3-tags-view",
+      storage: window.localStorage
     }
   }
-  // {
-  //   persist: {
-  //     key: "vue3-tags-view",
-  //     storage: window.localStorage
-  //   }
-  // }
 )

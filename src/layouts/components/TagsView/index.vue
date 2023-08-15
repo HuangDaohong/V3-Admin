@@ -106,6 +106,20 @@ const closeAllTags = (view: TagView) => {
   toLastView(tagsViewStore.visitedViews, view)
 }
 
+/** 关闭左侧标签页 */
+const closeLeftTags = (view: TagView) => {
+  tagsViewStore.delLeftVisitedViews(view)
+  tagsViewStore.delLeftCachedViews(view)
+  toLastView(tagsViewStore.visitedViews, view)
+}
+
+/** 关闭右侧标签页 */
+const closeRightTags = (view: TagView) => {
+  tagsViewStore.delRightVisitedViews(view)
+  tagsViewStore.delRightCachedViews(view)
+  toLastView(tagsViewStore.visitedViews, view)
+}
+
 /** 跳转到最后一个标签页 */
 const toLastView = (visitedViews: TagView[], view: TagView) => {
   const latestView = visitedViews.slice(-1)[0]
@@ -191,6 +205,8 @@ onMounted(() => {
       <li v-if="!isAffix(selectedTag)" @click="closeSelectedTag(selectedTag)">关闭</li>
       <li @click="closeOthersTags">关闭其它</li>
       <li @click="closeAllTags(selectedTag)">关闭所有</li>
+      <li @click="closeLeftTags(selectedTag)">关闭左侧</li>
+      <li @click="closeRightTags(selectedTag)">关闭右侧</li>
     </ul>
   </div>
 </template>

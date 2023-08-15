@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import { storeToRefs } from "pinia"
 import { useSettingsStore } from "@/store/modules/settings"
-import logo from "@/assets/layouts/logo.png?url"
-import logoText1 from "@/assets/layouts/logo-text-1.png?url"
-import logoText2 from "@/assets/layouts/logo-text-2.png?url"
+import logo from "@/assets/layouts/logo.png"
+import logoText1 from "@/assets/layouts/logo-text-1.png"
+import logoText2 from "@/assets/layouts/logo-text-2.png"
 
 interface Props {
   collapse?: boolean
@@ -22,6 +22,7 @@ const { layoutMode } = storeToRefs(settingsStore)
     <transition name="layout-logo-fade">
       <router-link v-if="props.collapse" key="collapse" to="/">
         <img :src="logo" class="layout-logo" />
+        <!-- <SvgIcon name="ikun" width="50px" height="50px" /> -->
       </router-link>
       <router-link v-else key="expand" to="/">
         <img :src="layoutMode !== 'left' ? logoText2 : logoText1" class="layout-logo-text" />

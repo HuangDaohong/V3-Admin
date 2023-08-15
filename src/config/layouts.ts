@@ -24,6 +24,10 @@ export interface LayoutSettings {
   showGreyMode: boolean
   /** 是否显示色弱模式 */
   showColorWeakness: boolean
+  /** 是否显示面包屑图标 */
+  showBreadIcon: boolean
+  /** 是否显示面包屑 */
+  showBread: boolean
 }
 
 export const layoutSettings: LayoutSettings = getConfigLayout() ?? {
@@ -37,5 +41,7 @@ export const layoutSettings: LayoutSettings = getConfigLayout() ?? {
   showScreenfull: true,
   cacheTagsView: false,
   showGreyMode: false,
-  showColorWeakness: false
+  showColorWeakness: false,
+  showBreadIcon: true,
+  showBread: true
 }

@@ -11,7 +11,6 @@ const { initTheme } = useTheme()
 /** 初始化主题 */
 initTheme()
 
-/** 作者小心思 */
 // ElNotification({
 //   title: "Hello",
 //   type: "success",
@@ -25,17 +24,17 @@ initTheme()
 // })
 
 ElNotification({
-  title: "破坏性更新",
-  type: "warning",
+  title: "welcome",
+  type: "success",
   message: h(
     "span",
     {
       style: "color: teal; cursor: pointer;",
       onClick: resetConfigLayout
     },
-    "由于平台 4.1.0 版本新增了多种布局模式，如果第一次出现白屏情况，点击这里或手动前往控制台清理 LocalStorage 缓存数据后刷新页面即可！"
+    "welcome, click here to reset the layout!"
   ),
-  duration: 2000,
+  duration: 4000,
   position: "bottom-right",
   offset: 0
 })

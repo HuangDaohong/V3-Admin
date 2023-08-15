@@ -8,12 +8,18 @@ import isWhiteList from "@/config/white-list"
 import NProgress from "nprogress"
 import "nprogress/nprogress.css"
 
-NProgress.configure({ showSpinner: false })
+NProgress.configure({
+  showSpinner: false,
+  easing: "ease"
+})
 
+/**
+ * @description 路由拦截 beforeEach
+ * */
 router.beforeEach(async (to, _from, next) => {
   NProgress.start()
   // import.meta.env.MODE: development | production | test
-  document.title = `${import.meta.env.VITE_APP_TITLE} - ${to.meta.title}-${import.meta.env.MODE}`
+  document.title = `${to.meta.title}-${import.meta.env.MODE}`
   const userStore = useUserStoreHook()
   const permissionStore = usePermissionStoreHook()
   // 判断该用户是否登录
@@ -21,7 +27,6 @@ router.beforeEach(async (to, _from, next) => {
     if (to.path === "/login") {
       // 如果已经登录，并准备进入 Login 页面，则重定向到主页
       next({ path: "/" })
-      NProgress.done()
     } else {
       // 检查用户是否已获得其权限角色
       if (userStore.roles.length === 0) {
@@ -49,7 +54,6 @@ router.beforeEach(async (to, _from, next) => {
           userStore.resetToken()
           ElMessage.error(err.message || "路由守卫过程发生错误")
           next("/login")
-          NProgress.done()
         }
       } else {
         next()
@@ -63,11 +67,21 @@ router.beforeEach(async (to, _from, next) => {
     } else {
       // 其他没有访问权限的页面将被重定向到登录页面
       next("/login")
-      NProgress.done()
     }
   }
 })
 
+/**
+ * @description 路由跳转结束
+ * */
 router.afterEach(() => {
   NProgress.done()
+})
+
+/**
+ * @description 路由跳转错误
+ * */
+router.onError((error) => {
+  NProgress.done()
+  console.warn("路由错误", error.message)
 })

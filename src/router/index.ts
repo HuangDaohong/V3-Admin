@@ -72,21 +72,21 @@ export const constantRoutes: RouteRecordRaw[] = [
       }
     ]
   },
-  {
-    path: "/link",
-    component: Layouts,
-    children: [
-      {
-        path: "https://juejin.cn/post/7089377403717287972",
-        component: () => {},
-        name: "Link",
-        meta: {
-          title: "外链",
-          svgIcon: "link"
-        }
-      }
-    ]
-  },
+  // {
+  //   path: "/link",
+  //   component: Layouts,
+  //   children: [
+  //     {
+  //       path: "https://juejin.cn/post/7089377403717287972",
+  //       component: () => {},
+  //       name: "Link",
+  //       meta: {
+  //         title: "外链",
+  //         svgIcon: "link"
+  //       }
+  //     }
+  //   ]
+  // },
   {
     path: "/table",
     component: Layouts,
@@ -103,7 +103,8 @@ export const constantRoutes: RouteRecordRaw[] = [
         name: "ElementPlus",
         meta: {
           title: "Element Plus",
-          keepAlive: true
+          keepAlive: true,
+          elIcon: "Grid"
         }
       },
       {
@@ -112,7 +113,29 @@ export const constantRoutes: RouteRecordRaw[] = [
         name: "VxeTable",
         meta: {
           title: "Vxe Table",
-          keepAlive: true
+          keepAlive: true,
+          elIcon: "Grid"
+        }
+      }
+    ]
+  },
+  {
+    path: "/commom",
+    component: Layouts,
+    redirect: "/common/echarts",
+    name: "Common",
+    meta: {
+      title: "常用",
+      elIcon: "Grid"
+    },
+    children: [
+      {
+        path: "element-plus",
+        component: () => import("@/views/commons/echarts/index.vue"),
+        name: "Echarts",
+        meta: {
+          title: "Echarts",
+          elIcon: "Menu"
         }
       }
     ]
@@ -133,7 +156,8 @@ export const constantRoutes: RouteRecordRaw[] = [
         redirect: "/menu/menu1/menu1-1",
         name: "Menu1",
         meta: {
-          title: "menu1"
+          title: "menu1",
+          svgIcon: "menu"
         },
         children: [
           {
@@ -141,7 +165,8 @@ export const constantRoutes: RouteRecordRaw[] = [
             component: () => import("@/views/menu/menu1/menu1-1/index.vue"),
             name: "Menu1-1",
             meta: {
-              title: "menu1-1"
+              title: "menu1-1",
+              svgIcon: "menu"
             }
           },
           {

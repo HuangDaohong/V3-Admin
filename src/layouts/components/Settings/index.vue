@@ -19,7 +19,9 @@ const {
   showScreenfull,
   cacheTagsView,
   showGreyMode,
-  showColorWeakness
+  showColorWeakness,
+  showBreadIcon,
+  showBread
 } = storeToRefs(settingsStore)
 
 /** 定义 switch 设置项 */
@@ -32,7 +34,9 @@ const switchSettings = {
   显示全屏按钮: showScreenfull,
   是否缓存标签栏: cacheTagsView,
   显示灰色模式: showGreyMode,
-  显示色弱模式: showColorWeakness
+  显示色弱模式: showColorWeakness,
+  显示面包屑: showBread,
+  显示面包屑图标: showBreadIcon
 }
 
 /** 非左侧模式时，Header 都是 fixed 布局 */
@@ -49,7 +53,15 @@ watchEffect(() => {
     <h4>功能配置</h4>
     <div class="setting-item" v-for="(settingValue, settingName, index) in switchSettings" :key="index">
       <span class="setting-name">{{ settingName }}</span>
-      <el-switch v-model="settingValue.value" :disabled="layoutMode !== 'left' && settingName === '固定 Header'" />
+      <el-switch
+        v-model="settingValue.value"
+        :disabled="
+          (layoutMode !== 'left' && settingName === '固定 Header') ||
+          (settingName === '显示面包屑图标' && !showBread) ||
+          (layoutMode === 'top' && settingName === '显示面包屑') ||
+          (layoutMode === 'top' && settingName === '显示面包屑图标')
+        "
+      />
     </div>
     <el-button type="danger" :icon="Refresh" @click="resetConfigLayout">重 置</el-button>
   </div>

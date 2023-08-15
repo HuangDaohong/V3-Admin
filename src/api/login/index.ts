@@ -17,6 +17,20 @@ export function loginApi(data: Login.LoginRequestData) {
     data
   })
 }
+// export function loginApi(data: Login.LoginRequestData) {
+//   return new Promise((resolve) => {
+//     setTimeout(() => {
+//       resolve({
+//         code: 0,
+//         data: {
+//           token: "token-admin",
+//           data
+//         },
+//         message: "登录成功"
+//       })
+//     }, 100)
+//   })
+// }
 
 /** 获取用户详情 */
 export function getUserInfoApi() {
@@ -25,3 +39,18 @@ export function getUserInfoApi() {
     method: "get"
   })
 }
+
+// export function getUserInfoApi() {
+//   return new Promise((resolve) => {
+//     setTimeout(() => {
+//       resolve({
+//         code: 0,
+//         data: {
+//           username: "admin",
+//           roles: ["admin"]
+//         },
+//         message: "获取成功"
+//       })
+//     }, 100)
+//   })
+// }

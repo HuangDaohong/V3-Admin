@@ -15,7 +15,8 @@ export const setConfigLayout = (settings: LayoutSettings) => {
   localStorage.setItem(CacheKey.CONFIG_LAYOUT, JSON.stringify(settings))
 }
 export const removeConfigLayout = () => {
-  localStorage.removeItem(CacheKey.CONFIG_LAYOUT)
+  // localStorage.removeItem(CacheKey.CONFIG_LAYOUT)
+  localStorage.removeItem(CacheKey.SETTINGS)
 }
 //#endregion
 

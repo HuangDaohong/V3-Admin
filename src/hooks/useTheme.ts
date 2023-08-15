@@ -43,6 +43,11 @@ const setTheme = (value: ThemeName) => {
 /** 在 html 根元素上挂载 class */
 const setHtmlRootClassName = (value: ThemeName) => {
   document.documentElement.className = value
+  // document.documentElement.classList.remove(DEFAULT_THEME_NAME)
+  // document.documentElement.classList.remove("dark")
+  // document.documentElement.classList.remove("dark-blue")
+  // document.documentElement.classList.remove("OS")
+  // document.documentElement.classList.add(value)
 }
 
 // 查询当前系统主题颜色

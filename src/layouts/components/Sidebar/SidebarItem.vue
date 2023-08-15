@@ -49,12 +49,12 @@ const theOnlyOneChild = computed(() => {
 /** 解析路径 */
 const resolvePath = (routePath: string) => {
   switch (true) {
-    case isExternal(routePath):
+    case isExternal(routePath): // 判断是否为外部链接
       return routePath
-    case isExternal(props.basePath):
+    case isExternal(props.basePath): // 判断是否为外部链接
       return props.basePath
     default:
-      return path.resolve(props.basePath, routePath)
+      return path.resolve(props.basePath, routePath) // 解析路径,返回绝对路径
   }
 }
 </script>

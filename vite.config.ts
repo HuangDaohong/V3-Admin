@@ -7,6 +7,9 @@ import vueJsx from "@vitejs/plugin-vue-jsx"
 import { createSvgIconsPlugin } from "vite-plugin-svg-icons"
 import svgLoader from "vite-svg-loader"
 import UnoCSS from "unocss/vite"
+import viteCompression from "vite-plugin-compression"
+import viteImagemin from "vite-plugin-imagemin"
+
 /** 配置项文档：https://cn.vitejs.dev/config */
 export default (configEnv: ConfigEnv): UserConfigExport => {
   const viteEnv = loadEnv(configEnv.mode, process.cwd()) as ImportMetaEnv
@@ -72,24 +75,41 @@ export default (configEnv: ConfigEnv): UserConfigExport => {
       }
     },
     build: {
+      outDir: "dist",
       /** 消除打包大小超过 500kb 警告 */
       chunkSizeWarningLimit: 2000,
       /** Vite 2.6.x 以上需要配置 minify: "terser", terserOptions 才能生效 */
       minify: "terser",
+      // vite打包是通过rollup来打包的
+      rollupOptions: {
+        output: {
+          chunkFileNames: "js/[name]-[hash].js", // 引入文件名的名称
+          entryFileNames: "js/[name]-[hash].js", // 包的入口文件名称
+          assetFileNames: "[ext]/[name]-[hash].[ext]", // 资源文件像 字体，图片等
+          manualChunks(id) {
+            if (id.includes("node_modules")) {
+              return "vendor"
+            }
+          }
+        }
+      },
       /** 在打包代码时移除 console.log、debugger 和 注释 */
       terserOptions: {
         compress: {
-          drop_console: false,
+          drop_console: true,
           drop_debugger: true,
-          pure_funcs: ["console.log"]
+          pure_funcs: ["console.log"] // 移除console
         },
         format: {
           /** 删除注释 */
           comments: false
         }
       },
-      /** 打包后静态资源目录 */
-      assetsDir: "static"
+      reportCompressedSize: false,
+      /** 打包后是否生成 source map 文件 */
+      sourcemap: false
+      // /** 打包后静态资源目录 */
+      // assetsDir: "static"
     },
     /** Vite 插件 */
     plugins: [
@@ -103,7 +123,43 @@ export default (configEnv: ConfigEnv): UserConfigExport => {
         symbolId: "icon-[dir]-[name]"
       }),
       /** UnoCSS */
-      UnoCSS()
+      UnoCSS(),
+      /** Gzip 压缩 */
+      viteCompression({
+        verbose: true, // 是否在控制台中输出压缩结果
+        disable: false, //是否禁用压缩，默认为 false
+        threshold: 10240, // 如果体积大于阈值，将被压缩，单位为b，体积过小时请不要压缩，以免适得其反
+        algorithm: "brotliCompress", // 压缩算法，默认gzip，可选brotliCompress
+        ext: ".br",
+        deleteOriginFile: false // 是否删除原文件,默认为false
+      }),
+      viteImagemin({
+        gifsicle: {
+          optimizationLevel: 7,
+          interlaced: false
+        },
+        optipng: {
+          optimizationLevel: 7
+        },
+        mozjpeg: {
+          quality: 20
+        },
+        pngquant: {
+          quality: [0.8, 0.9],
+          speed: 4
+        },
+        svgo: {
+          plugins: [
+            {
+              name: "removeViewBox"
+            },
+            {
+              name: "removeEmptyAttrs",
+              active: false
+            }
+          ]
+        }
+      })
     ],
     /** Vitest 单元测试配置：https://cn.vitest.dev/config */
     test: {

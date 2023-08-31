@@ -1,7 +1,7 @@
 <template>
   <div class="app-container contain">
     <div>B组件:{{ props.num }}</div>
-    <div class="container">可拖拽的div</div>
+
     <hr />
     <el-button type="primary" @click="getMediaDevices">获取摄像头和麦克风</el-button>
     <el-button type="primary" @click="closeMediaDevices">关闭</el-button>
@@ -19,6 +19,7 @@
     <el-button type="primary" @click="setRemoteDes">设置远程描述</el-button>
     <el-button type="primary" @click="createAnswer">创建answer</el-button>
     <el-button type="primary" @click="addCandidate">添加候选</el-button>
+    <div class="container">可拖拽的div</div>
   </div>
 </template>
 
